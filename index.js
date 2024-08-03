@@ -16,6 +16,7 @@ server.listen(PORT, () => {
 // body parser middleware
 server.use(express.json());
 
+// mounting the routes
 const routes = require("./routes/routes");
 server.use(routes);
 
