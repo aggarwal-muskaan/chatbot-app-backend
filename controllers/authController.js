@@ -63,6 +63,7 @@ const createNewUserEntry = async (user) => {
   const createdUser = await UserData.create({
     name: user.name,
     email: user.email,
+    profilePic: user.picture,
   });
 
   // if there is a problem in creating the new user entry in the DB, return false so that response is set to unsuccessful
