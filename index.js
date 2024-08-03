@@ -4,7 +4,7 @@ const connectToDB = require("./config/connectToDB");
 const express = require("express");
 const server = express();
 
-// popultating dot env fields in process object
+// populating dot env fields in process object
 require("dotenv").config();
 const PORT = process.env.PORT_NUMBER || 5000;
 
