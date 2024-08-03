@@ -21,8 +21,3 @@ server.use(routes);
 
 // connecting to db
 connectToDB();
-
-// default route
-server.get("/", (req, res) => {
-  res.send(`<h1>Hello</h1>`);
-});
