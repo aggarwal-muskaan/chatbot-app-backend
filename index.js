@@ -13,6 +13,12 @@ server.listen(PORT, () => {
   console.log(`SERVER running on port ${PORT}`);
 });
 
+// body parser middleware
+server.use(express.json());
+
+const routes = require("./routes/routes");
+server.use(routes);
+
 // connecting to db
 connectToDB();
 
