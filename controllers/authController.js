@@ -39,13 +39,12 @@ const login = async (req, res) => {
       profilePic: payload.picture,
       isNewUser,
     };
+
     // success status
     res.status(200).json({ message: "Token is valid", data });
-    // todo: create connection with server
-    // createSocketConnection();
   } catch (error) {
     console.log("error in TOKEN VERIICATION: ", error);
-    // res.status(401).json({ error: "Invalid token", message: error.message });
+    res.status(401).json({ error: "Invalid token", message: error.message });
   }
 };
 
