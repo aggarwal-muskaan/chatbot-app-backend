@@ -10,11 +10,6 @@ const server = express();
 require("dotenv").config();
 const PORT = process.env.PORT_NUMBER || 5000;
 
-// listening on port
-server.listen(PORT, () => {
-  console.log(`SERVER running on port ${PORT}`);
-});
-
 // body parser middleware
 server.use(express.json());
 
@@ -27,8 +22,14 @@ connectToDB();
 
 const { createSocketConnection } = require("./controllers/chatsController");
 const httpServer = http.createServer(server);
-httpServer.listen(8080);
 const io = socketIo(httpServer);
+// socketconnection
 io.on("connection", (socket) => {
-  console.log("Connected to socket.io");
+  // console.log("Connected to socket.io");
+  createSocketConnection(socket, io);
+});
+
+// listening http server on port
+httpServer.listen(PORT, () => {
+  console.log(`SERVER running on port ${PORT}`);
 });
