@@ -1,6 +1,7 @@
+const { OAuth2Client } = require("google-auth-library");
+
 const UserData = require("../model/userInfo");
 
-const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // login token verification controller
@@ -40,9 +41,11 @@ const login = async (req, res) => {
     };
     // success status
     res.status(200).json({ message: "Token is valid", data });
+    // todo: create connection with server
+    // createSocketConnection();
   } catch (error) {
     console.log("error in TOKEN VERIICATION: ", error);
-    res.status(401).json({ error: "Invalid token", message: error.message });
+    // res.status(401).json({ error: "Invalid token", message: error.message });
   }
 };
 

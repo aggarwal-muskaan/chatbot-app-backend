@@ -1,4 +1,6 @@
 const connectToDB = require("./config/connectToDB");
+const socketIo = require("socket.io");
+const http = require("http");
 
 // instantiating the server
 const express = require("express");
@@ -22,3 +24,11 @@ server.use(routes);
 
 // connecting to db
 connectToDB();
+
+const { createSocketConnection } = require("./controllers/chatsController");
+const httpServer = http.createServer(server);
+httpServer.listen(8080);
+const io = socketIo(httpServer);
+io.on("connection", (socket) => {
+  console.log("Connected to socket.io");
+});
