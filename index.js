@@ -23,9 +23,9 @@ connectToDB();
 const { createSocketConnection } = require("./controllers/chatsController");
 const httpServer = http.createServer(server);
 const io = socketIo(httpServer);
+
 // socketconnection
 io.on("connection", (socket) => {
-  // console.log("Connected to socket.io");
   createSocketConnection(socket, io);
 });
 
