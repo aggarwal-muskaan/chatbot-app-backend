@@ -10,6 +10,7 @@ const Chats = new mongoose.Schema({
   chatMessage: {
     type: String,
     required: true,
+    trim: true,
   },
 
   isAIResponse: {
