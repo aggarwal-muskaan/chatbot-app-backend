@@ -20,7 +20,8 @@ const login = async (req, res) => {
     // check if the user is new or already existing
     const isNewUser = await isUserNew(payload.email);
 
-    const userAccessToken = await fetchToken(payload.email);
+    // create a new JWT token
+    const userAccessToken = await fetchToken(payload.email, payload.name);
 
     // if new user create its entry in the DB
     if (isNewUser) {
@@ -31,7 +32,7 @@ const login = async (req, res) => {
 
       // if user entry in DB is obstructed, send an unsuccessful response
       if (!isSuccessful) {
-        res.status(500).json({
+        return res.status(500).json({
           message: "There is some error in sign up. Please try again later",
         });
         return;
@@ -43,6 +44,15 @@ const login = async (req, res) => {
         { accessToken: userAccessToken, lastActiveOn: Date() },
         { new: true }
       );
+
+      // if there is a problem in updating the usertoken, return an unsuccessful response
+      if (!updatedUserEntry) {
+        return res.status(500).json({
+          success: false,
+          message:
+            "Error in creating new jwt token. Please try again after some time!",
+        });
+      }
     }
 
     // data to be sent back to client on successful response
@@ -54,20 +64,25 @@ const login = async (req, res) => {
     };
 
     // success status
-    res.status(200).json({ message: "Token is valid", data });
+    return res.status(200).json({ message: "Token is valid", data });
   } catch (error) {
     console.log("error in TOKEN VERIICATION: ", error);
-    res.status(401).json({ error: "Invalid token", message: error.message });
+    return res
+      .status(401)
+      .json({ error: "Invalid token", message: error.message });
   }
 };
 
-const fetchToken = async (userEmail) => {
+// function to generate a JWT token
+const fetchToken = async (userEmail, name) => {
   const jwtToken = JSONwebToken.sign(
     {
-      data: userEmail,
+      email: userEmail,
+      name: name,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1m" }
+    // no token expiry
+    {}
   );
 
   return jwtToken;
