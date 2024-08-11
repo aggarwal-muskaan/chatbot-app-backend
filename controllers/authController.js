@@ -49,8 +49,7 @@ const login = async (req, res) => {
       if (!updatedUserEntry) {
         return res.status(500).json({
           success: false,
-          message:
-            "Error in creating new jwt token. Please try again after some time!",
+          message: "Internal server error. Please try again after some time!",
         });
       }
     }
