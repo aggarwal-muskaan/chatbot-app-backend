@@ -18,7 +18,6 @@ const createSocketConnection = (socket, io) => {
         },
         { new: true }
       );
-      console.log("updatedChats: ", updatedChats);
 
       io.emit("message", newMessage);
     } catch (err) {
