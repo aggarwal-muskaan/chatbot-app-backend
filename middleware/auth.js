@@ -1,14 +1,12 @@
-const UserData = require("../model/userInfo");
-
 const jwt = require("jsonwebtoken");
 
-exports.isTokenValid = async (request, response) => {
+exports.isTokenValid = async (request, response, next) => {
   // extracting the token from request header (replace Bearer_ with '')
   const authToken = request.headers["authorization"].replace("Bearer ", "");
 
   try {
-    const veifiedToken = jwt.verify(authToken, process.env.JWT_SECRET);
-    console.log("Token Payload: ", veifiedToken);
+    const verifiedToken = jwt.verify(authToken, process.env.JWT_SECRET);
+    request.user = verifiedToken;
   } catch (error) {
     console.log("ERROR in token verification: ", error);
     return response.status(401).json({
@@ -17,4 +15,6 @@ exports.isTokenValid = async (request, response) => {
       error,
     });
   }
+
+  next();
 };
