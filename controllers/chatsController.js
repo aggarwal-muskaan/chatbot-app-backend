@@ -10,19 +10,6 @@ const createSocketConnection = (socket, io) => {
       // create a new entry in user-chats collections
       const newUserMessage = await UserChat.create({ chatMessage: message });
 
-      // todo: try to push both user message and the AI message into dB at once
-      // pushing this message into user's array of chats
-      const updatedChats = await UserData.findOneAndUpdate(
-        {
-          // todo: fetch this email dynamically
-          email: "miheer.sharma1@gmail.com",
-        },
-        {
-          $push: { chats: { $each: [newUserMessage._id], $position: 0 } },
-        },
-        { new: true }
-      );
-
       // generate chat response
       const aiResponse = await generateResponse(message);
 
@@ -35,10 +22,16 @@ const createSocketConnection = (socket, io) => {
       // pushing this response message into user's array of chats
       const updatedChatsAfterResponse = await UserData.findOneAndUpdate(
         {
+          // todo: dynamic email
           email: "miheer.sharma1@gmail.com",
         },
         {
-          $push: { chats: { $each: [newResponseMessage._id], $position: 0 } },
+          $push: {
+            chats: {
+              $each: [newResponseMessage._id, newUserMessage._id],
+              $position: 0,
+            },
+          },
         },
         { new: true }
       );
