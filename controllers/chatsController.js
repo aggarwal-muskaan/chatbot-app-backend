@@ -1,12 +1,15 @@
 const UserChat = require("../model/chat"); // Mongoose model for Message
 const UserData = require("../model/userInfo");
-const { generateResponse } = require("./generateChatResponse");
+const { generateResponse, setChatContext } = require("./generateChatResponse");
 
 const createSocketConnection = (socket, io) => {
   console.log("New client connected");
 
   socket.on("sendMessage", async (message) => {
     try {
+      // set context for the chat
+      setChatContext();
+
       // create a new entry in user-chats collections
       const newUserMessage = await UserChat.create({ chatMessage: message });
 
