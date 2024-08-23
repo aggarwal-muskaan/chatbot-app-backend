@@ -35,7 +35,6 @@ const login = async (req, res) => {
         return res.status(500).json({
           message: "There is some error in sign up. Please try again later",
         });
-        return;
       }
     } else {
       // update accessToken for existing user

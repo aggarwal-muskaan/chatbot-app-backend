@@ -7,11 +7,14 @@ const createSocketConnection = (socket, io) => {
 
   socket.on("sendMessage", async (message) => {
     try {
+      // set context for the chat & generate response
+      const aiResponse = await setContextGenerateResponse({
+        userEmail: socket.user.email,
+        userNewMessage: message,
+      });
+
       // create a new entry in user-chats collections
       const newUserMessage = await UserChat.create({ chatMessage: message });
-
-      // set context for the chat & generate response
-      const aiResponse = await setContextGenerateResponse(message);
 
       // store AI response chat message in user-chat collections in DB
       const newResponseMessage = await UserChat.create({
@@ -22,8 +25,8 @@ const createSocketConnection = (socket, io) => {
       // pushing this response message into user's array of chats
       const updatedChatsAfterResponse = await UserData.findOneAndUpdate(
         {
-          // todo: dynamic email
-          email: "miheer.sharma1@gmail.com",
+          email: socket.user.email,
+          // email: "miheer.sharma1@gmail.com",
         },
         {
           $push: {

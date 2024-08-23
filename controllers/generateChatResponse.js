@@ -1,5 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const UserChat = require("../model/chat"); // Mongoose model for Message
+const UserData = require("../model/userInfo");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -7,12 +8,15 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // handler to generate response
 
-exports.setContextGenerateResponse = async (userNewMessage) => {
+exports.setContextGenerateResponse = async ({ userEmail, userNewMessage }) => {
+  const user = await UserData.find({ email: userEmail });
+
+  const chatIds = user[0].chats.slice(0, 6);
+
   // need to set the context when socket connection is established
-  const lastSixChatMessages = await UserChat.find()
-    .sort({ _id: -1 }) // Sort by _id in descending order to get the latest entries
-    .limit(6) // Limit the results to the latest 6 entries
-    .exec();
+  const lastSixChatMessages = await UserChat.find({
+    _id: { $in: chatIds },
+  }).populate();
 
   const userChatMessages = lastSixChatMessages.filter(
     (message) => !message.isAIResponse

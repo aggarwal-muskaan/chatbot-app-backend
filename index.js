@@ -1,5 +1,6 @@
 const connectToDB = require("./config/connectToDB");
 const socketIo = require("socket.io");
+const jwt = require("jsonwebtoken");
 const http = require("http");
 
 // instantiating the server
@@ -23,6 +24,22 @@ connectToDB();
 const { createSocketConnection } = require("./controllers/chatsController");
 const httpServer = http.createServer(server);
 const io = socketIo(httpServer);
+
+// socket middleware
+io.use((socket, next) => {
+  const accessToken = socket.handshake.auth.token;
+  if (accessToken) {
+    try {
+      const user = jwt.verify(accessToken, process.env.JWT_SECRET);
+      socket.user = user; // Attach user info to the socket object
+      next();
+    } catch (err) {
+      next(new Error("Authentication error"));
+    }
+  } else {
+    next(new Error("No token provided"));
+  }
+});
 
 // socketconnection
 io.on("connection", (socket) => {
