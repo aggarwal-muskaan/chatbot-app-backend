@@ -15,8 +15,7 @@ exports.getAllSavedMessages = async (request, response) => {
     }
 
     const allSavedChats = await UserChat.find({
-      _id: { $in: user.chats },
-      isSaved: true,
+      $and: [{ _id: { $in: user.chats } }, { isSaved: true }],
     });
 
     console.log("allSavedChats: ", allSavedChats);
