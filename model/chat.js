@@ -19,6 +19,12 @@ const Chats = new mongoose.Schema({
     default: false,
   },
 
+  isSaved: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   //   updatedAt:{}
 });
 
