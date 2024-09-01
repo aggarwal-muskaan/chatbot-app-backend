@@ -40,10 +40,6 @@ exports.saveChatMessage = async (request, response) => {
       { new: true }
     );
 
-    // todo: to discuss whether to allow saving only AI response or all messages
-
-    console.log("savedChatMessage: ", savedChatMessage);
-
     if (!savedChatMessage) {
       return response.status(500).json({
         success: false,
