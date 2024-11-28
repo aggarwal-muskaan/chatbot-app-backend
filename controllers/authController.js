@@ -62,12 +62,17 @@ const login = async (req, res) => {
     };
 
     // success status
-    return res.status(200).json({ message: "Token is valid", data });
+    return res.status(200).json({
+      message: "Token is valid",
+      data,
+      success: true,
+      accessToken: userAccessToken,
+    });
   } catch (error) {
     console.log("error in TOKEN VERIICATION: ", error);
     return res
       .status(401)
-      .json({ error: "Invalid token", message: error.message });
+      .json({ error: "Invalid token", message: error.message, success: false });
   }
 };
 
