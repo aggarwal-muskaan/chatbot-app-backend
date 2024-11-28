@@ -3,6 +3,8 @@ const socketIo = require("socket.io");
 const jwt = require("jsonwebtoken");
 const http = require("http");
 
+const cors = require("cors");
+
 // instantiating the server
 const express = require("express");
 const server = express();
@@ -14,9 +16,22 @@ const PORT = process.env.PORT_NUMBER || 5000;
 // body parser middleware
 server.use(express.json());
 
+// adding cors middleware to facilitate communication between server(backend) and client(frontend) via requests and responses
+const allowedOrigins = ["http://localhost:8081"];
+server.use(
+  cors({
+    origin: allowedOrigins, // front end path(url) from where the request will be made to the backend or server
+    credentials: true,
+  })
+);
+
 // mounting the routes
 const routes = require("./routes/routes");
 server.use(routes);
+
+server.get("/", (req, res) => {
+  res.send(`<h1>HELLO</h1>`);
+});
 
 // connecting to db
 connectToDB();
