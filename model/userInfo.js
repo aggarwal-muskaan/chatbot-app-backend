@@ -33,6 +33,20 @@ const User = new mongoose.Schema({
       ref: "UserChat",
     },
   ],
+
+  recipes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Recipes",
+    },
+  ],
+
+  itineraries: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Itineraries",
+    },
+  ],
 });
 
 module.exports = mongoose.model("UserData", User);
