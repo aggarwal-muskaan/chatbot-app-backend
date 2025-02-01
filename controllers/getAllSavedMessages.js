@@ -10,7 +10,7 @@ exports.getAllSavedMessages = async (request, response) => {
     if (!user) {
       return response.status(401).json({
         success: false,
-        message: "Unauthrized user",
+        message: "Unauthorized user",
       });
     }
 
