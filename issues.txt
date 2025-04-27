@@ -1,3 +1,4 @@
+- implement checks for chat relevance for each chat type (in recipe window only recipe chat should be answered and so on.)
 - initially there was no need to explicitly pass the token in authorization header of socket to access it, but now it is, find a way to revert back to previous method.
 - create a new api/ model /handler for resume review
 
