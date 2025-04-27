@@ -1,2 +1,5 @@
+- initially there was no need to explicitly pass the token in authorization header of socket to access it, but now it is, find a way to revert back to previous method.
+- create a new api/ model /handler for resume review
+
 - Google O Auth working without using google client id from env
 - pagination / limit in getAllMessages API
