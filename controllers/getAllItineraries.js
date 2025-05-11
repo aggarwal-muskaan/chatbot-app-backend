@@ -13,7 +13,7 @@ exports.getAllItineraries = async (request, response) => {
       });
 
     const allUserItineraries = await Itineraries.find({
-      _id: { $in: user.itnieraries },
+      _id: { $in: user.itineraries },
     }).populate();
 
     return response.status(200).json({
