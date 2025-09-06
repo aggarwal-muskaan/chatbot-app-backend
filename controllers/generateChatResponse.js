@@ -50,24 +50,26 @@ exports.setContextGenerateResponse = async ({
 
   // setting context only if there are atleast 2 chat messages (one user's and one AIresponse to that)
   const chat = model.startChat(
-    chatIds?.length && {
-      history: [
-        // user context
-        {
-          role: "user",
-          parts: userChatMessages.map((userMessage) => ({
-            text: userMessage.chatMessage,
-          })),
-        },
-        // AI (model) context
-        {
-          role: "model",
-          parts: modelResponse.map((response) => ({
-            text: response.chatMessage,
-          })),
-        },
-      ],
-    }
+    chatIds?.length
+      ? {
+          history: [
+            // user context
+            {
+              role: "user",
+              parts: userChatMessages?.map((userMessage) => ({
+                text: userMessage.chatMessage,
+              })),
+            },
+            // AI (model) context
+            {
+              role: "model",
+              parts: modelResponse?.map((response) => ({
+                text: response.chatMessage,
+              })),
+            },
+          ],
+        }
+      : undefined
   );
 
   const SYSTEM_PROMPT = (chatType, userNewMessage) => `
