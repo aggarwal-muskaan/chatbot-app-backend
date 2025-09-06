@@ -42,7 +42,9 @@ const io = socketIo(httpServer);
 
 // socket middleware
 io.use((socket, next) => {
-  const accessToken = socket.handshake.auth.token;
+  const accessToken =
+    socket.handshake.auth?.token ||
+    socket.handshake.headers.authorization?.split(" ")[1];
   if (accessToken) {
     try {
       const user = jwt.verify(accessToken, process.env.JWT_SECRET);
